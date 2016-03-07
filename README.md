@@ -9,7 +9,7 @@ You have to put the hub full installer in this directory, the file name has to h
 appmgr.hubinstall.full*.zip
 
 
-###Start srcipt
+###Start script
 Then you can start the build with the following command
 ```console
 $./autobuild.sh -i|--image <image name> -l|--license <license string>

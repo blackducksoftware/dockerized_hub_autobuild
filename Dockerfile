@@ -13,28 +13,23 @@ RUN yum update -y && yum install -y \
   nc \
   libcap \
   nmap-ncat \
-#  tar \
   passwd \
   redhat-lsb-core \
-#  unzip \
-  which
-
-# set root password
-RUN echo blackduck | passwd --stdin root
-
-# create user and groups necessary for installation
-RUN groupadd blckdck
-RUN useradd -g blckdck blckdck
-RUN echo blackduck | passwd --stdin blckdck
-
-# preinstall stuff
-RUN mkdir -p /opt/blackduck && chown blckdck:blckdck /opt/blackduck   \
-#    && mkdir -p /home/blackduck && chown blckdck:blckdck /home/blackduck \
-    && mkdir -p /var/lib/blckdck && chown blckdck:blckdck /var/lib/blckdck \
-    && mkdir -p /var/spool/clones && chown blckdck:blckdck  /var/spool/clones \
-    && mkdir -p /var/spool/mirrors && chown blckdck:blckdck /var/spool/mirrors \    
-    && mkdir -p /opt/blackduck/maiastra && chown -R blckdck:blckdck /opt/blackduck \
-    && usermod -m -d /home/blackduck blckdck 
+  which \
+  # set root password
+  &&  echo blackduck | passwd --stdin root \
+  # create user and groups necessary for installation
+  && groupadd blckdck \
+  && useradd -g blckdck blckdck \
+  && echo blackduck | passwd --stdin blckdck \
+  # preinstall stuff
+  && mkdir -p /opt/blackduck && chown blckdck:blckdck /opt/blackduck   \
+  && mkdir -p /var/lib/blckdck && chown blckdck:blckdck /var/lib/blckdck \
+  && mkdir -p /var/spool/clones && chown blckdck:blckdck  /var/spool/clones \
+  && mkdir -p /var/spool/mirrors && chown blckdck:blckdck /var/spool/mirrors \    
+  && mkdir -p /opt/blackduck/maiastra && chown -R blckdck:blckdck /opt/blackduck \
+  && usermod -m -d /home/blackduck blckdck
+#  && yum remove -y passwd 
 
 
 COPY ./start.sh /opt/blackduck/maiastra/
