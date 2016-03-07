@@ -62,7 +62,7 @@ find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 docker run -ti -h $(hostname) --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hubinstall/install.sh
 
 # commit the installation container to image
-docker commit $_CONTAINER_NAME $IMAGE_NAME
+docker commit $_CONTAINER_NAME $_IMAGE_NAME
 
 
 # remove the install container
