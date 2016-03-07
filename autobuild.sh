@@ -47,7 +47,7 @@ _CONTAINER_NAME="hub_install"
 _TMP_IMG_NAME="hubInstall:temp"
 
 #build the initial image
-docker build -t  "$_IMAGE_NAME" .
+docker build -t  "$_TMP_IMG_NAME" .
 
 
 # unzip installer
