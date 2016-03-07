@@ -1,12 +1,49 @@
 #!/bin/bash
 
 
+_IMAGE=
+_LICENSE=
+
+usage () {
+  echo 'This should be started with the following mandatory fields
+        -i | --images : the name of the image to create
+        -l | --license : the license you got from Black Duck support
+       ' 
+}
+
+while [ "$1" != "" ]; do
+  case $1 in 
+      -i | --image )       shift
+                           _IMAGE=$1
+                           ;;
+      -l | --license )     shift
+                           _LICENSE=$1
+                           ;;
+      -h | --help )        usage
+                           exit
+                           ;;
+      * )                  usage
+                           exit 1
+  esac
+  shift
+done
+
+# check mandatory parameters
+#if [ $_IMAGE -eq "" | $_LICENSE -eq "" ]; do
+if [ "$_IMAGE" == "" ]  || [ "$_LICENSE" == "" ]; then
+  usage
+  exit
+fi
+
+
 # initialize constants
-_IMAGE="blackducksoftware/hub_test"
 _TAG=$(find . -name "appmgr.hubinstall*.zip" | sed 's/.*full-//' | sed 's/\.zip//')
+if [ "$_TAG" == "" ]; then
+  echo "installer not present in this directory or not of format appmgr.hubinstall*.zip"
+  exit 2
+fi
 _IMAGE_NAME="$_IMAGE:$_TAG"
 _CONTAINER_NAME="hub_install"
-_LICENSE="ton_hub_0036000001Yq9f6"
 
 #build the initial image
 docker build -t  "$_IMAGE_NAME" .
