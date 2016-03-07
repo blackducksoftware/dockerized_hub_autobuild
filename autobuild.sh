@@ -44,7 +44,7 @@ if [ "$_TAG" == "" ]; then
 fi
 _IMAGE_NAME="$_IMAGE:$_TAG"
 _CONTAINER_NAME="hub_install"
-_TMP_IMG_NAME="hubInstall:temp"
+_TMP_IMG_NAME="hub_install:temp"
 
 #build the initial image
 docker build -t  "$_TMP_IMG_NAME" .
