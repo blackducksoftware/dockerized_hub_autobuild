@@ -44,6 +44,7 @@ if [ "$_TAG" == "" ]; then
 fi
 _IMAGE_NAME="$_IMAGE:$_TAG"
 _CONTAINER_NAME="hub_install"
+_TMP_IMG_NAME="hubInstall:temp"
 
 #build the initial image
 docker build -t  "$_IMAGE_NAME" .
@@ -58,13 +59,19 @@ find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 
 
 #start initial image with the install script
-#docker run -ti -h $(hostname) --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_IMAGE_NAME /bin/bash
-docker run -ti -h $(hostname) --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_IMAGE_NAME /tmp/hubinstall/install.sh
+docker run -ti -h $(hostname) --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hubinstall/install.sh
 
 # commit the installation container to image
 docker commit $_CONTAINER_NAME $IMAGE_NAME
 
+
 # remove the install container
 docker rm $_CONTAINER_NAME
+
+# remove temp image
+docker rmi $_TMP_IMG_NAME
+
+# remove last line in the silent.properties file so lincense is removed
+ find . -name "silentInstall.properties" -exec sed -i '$ d'  {} \;
 
 # remove the install dir
