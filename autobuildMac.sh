@@ -71,7 +71,7 @@ if [ $prop_file == "" ]; then
 fi
 tmp_prop_file=echo "$prop_file.tmp"
 cp $prop_file $tmp_prop_file
-cat <<EOT >> $tmp_prop_file
+cat <<EOT >> $prop_file
 PROP_ACTIVE_REGID=$_LICENSE
 EOT
 
@@ -89,11 +89,10 @@ docker rm $_CONTAINER_NAME
 # remove temp image
 docker rmi $_TMP_IMG_NAME
 
-# remove last line in the silent.properties file so lincense is removed
- find . -name "silentInstall.properties" -exec sed -i '$ d'  {} \;
 
 # remove the install dir
 rm -rf  $(ls -all | grep "^d" | grep "appmgr\.hubinstall" | awk '{print $9}')
 
-# remove tmp file
+# restore properties file and remove tmp file
+cp $tmp_prop_file $prop_file
 rm -rf $tmp_prop_file
