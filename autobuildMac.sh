@@ -54,7 +54,7 @@ docker build -t  "$_TMP_IMG_NAME" .
 find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 
 # override install properties to put data in one place
-prop_file=$(find . -name "silentInstall.properties")
+prop_file=$(find . -name "bds-override.properties")
 if [ "$prop_file" == "" ]; then
   echo "no bds-override.properties file found."
   exit
