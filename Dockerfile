@@ -42,4 +42,5 @@ RUN  chown -R blckdck:blckdck opt/blackduck/maiastra \
 
 # when the container starts run as blckdck user
 USER blckdck
-CMD bash -c '/opt/blackduck/maiastra/start.sh';'bash'
+ENTRYPOINT [ "bash" , "-c" ]
+CMD [ "/opt/blackduck/maiastra/start.sh" ] 
