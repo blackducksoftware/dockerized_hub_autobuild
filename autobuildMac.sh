@@ -55,7 +55,7 @@ find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 
 # override install properties to put data in one place
 #prop_file=$(find . -name "silentInstall.properties")
-if [ $prop_file == "" ]; then
+if [ "$prop_file" == "" ]; then
   echo "no bds-override.properties file found."
   exit
 fi
@@ -69,7 +69,7 @@ if [ $prop_file == "" ]; then
   echo "no silentInstall.properties file found."
   exit
 fi
-tmp_prop_file=echo "$prop_file.tmp"
+tmp_prop_file=$(echo "$prop_file.tmp")
 cp $prop_file $tmp_prop_file
 cat <<EOT >> $prop_file
 PROP_ACTIVE_REGID=$_LICENSE
