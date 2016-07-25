@@ -12,7 +12,7 @@ appmgr.hubinstall.full*.zip
 ###Start script
 Then you can start the build with the following command
 
-for linux (tested on ubuntu 15.10)
+for linux (tested on ubuntu 15.10 / 16.04 and mac)
 ```console
 $./autobuild.sh -i|--image <image name> -l|--license <license string>
 ``` 
