@@ -25,3 +25,8 @@ Note that the autobuild*.sh and install.sh have to have execution rights
 ```console
 $chmod +x <file name>
 ```
+
+
+### Generate a docker image whithout a license
+
+To generate a image without a licecense do the above but use the autobuildNoLicense.sh script instead
