@@ -48,8 +48,27 @@ _IMAGE_NAME="$_IMAGE:$_TAG"
 _CONTAINER_NAME="hub_install"
 _TMP_IMG_NAME="hub_install:temp"
 
+
+
+# unzip installer to determine build versions
+mkdir ./tmp
+find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d ./tmp \;
+find . -type f -name "hub.web-*.zip" -exec unzip -o {} -d ./tmp \;
+find . -type f -name "main.web-*.war" -exec unzip -o {} -d ./tmp \;
+find . -type f -name "MANIFEST.MF" -exec dos2unix {} \;
+Productversion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Product-version | sed 's/Product-version: //'  )
+Build=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Build: | sed 's/Build: //'  )
+Buildtime=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Build-time: | sed 's/Build-time: //' )
+#LastCommit=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Last-Commit: | sed 's/Last-Commit: //' )
+BDSHubUIVersion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep BDS-Hub-UI-Version: | sed 's/BDS-Hub-UI-Version: //' )
+rm -rf  ./tmp
+
+
 #build the initial image
-docker build -t  "$_TMP_IMG_NAME" .
+docker build  --build-arg "Productversion=${Productversion}" \
+              --build-arg "Build=${Build}" \
+              --build-arg "Buildtime=${Buildtime}" \
+              --build-arg "BDSHubUIVersion=${BDSHubUIVersion}" -t  "${_TMP_IMG_NAME}" .  
 
 
 # unzip installer

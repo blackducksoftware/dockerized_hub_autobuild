@@ -1,6 +1,15 @@
 FROM centos:latest
 MAINTAINER Ton Schoots <ton@maiastra.com>
 
+ARG Productversion=unknown
+ARG Build=unknown
+ARG Buildtime=unknown
+ARG BDSHubUIVersion=unknown
+
+LABEL Productversion=${Productversion} \
+      Build=${Build}  \
+      Buildtime=${Buildtime}  \
+      BDSHubUIVersion=${BDSHubUIVersion}
 
 # the ports to expose for this image
 EXPOSE 4181 8080 7081 55436 8009 8983 8909 80 443
