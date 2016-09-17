@@ -1,6 +1,14 @@
 #!/bin/bash
 
 # autobuildNoLicense.sh
+/*
+   author : Ton Schoots
+
+   This bash script automatically builds a dockerized hub
+
+   issues :
+         17-09-2016      $TAG and $Productversion should be the same should this be and assert?
+*/
 
 
 _IMAGE=

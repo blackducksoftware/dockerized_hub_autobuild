@@ -9,7 +9,17 @@ ARG BDSHubUIVersion=unknown
 LABEL Productversion=${Productversion} \
       Build=${Build}  \
       Buildtime=${Buildtime}  \
-      BDSHubUIVersion=${BDSHubUIVersion}
+      BDSHubUIVersion=${BDSHubUIVersion} \
+      START="if docker ps -a | grep hub_data; \
+              then \
+                 echo \"all ok starting the hub ${Productversion}\"; \
+              else \
+                 echo \"datacontainer hub_data not available creating new one\"; \
+                 docker run -v /var/lib/blckdck/hub  -v /opt/blackduck/hub/config --name hub_data blackducksoftware/hub:${Productversion} true; \
+             fi; \
+             docker run   -h $(hostname) --volumes-from hub_data --name=hub --rm -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 blackducksoftware/hub:${Productversion}" \
+      STOP="docker stop hub" \
+      CLEAN="docker stop hub && docker rm hub;"
 
 # the ports to expose for this image
 EXPOSE 4181 8080 7081 55436 8009 8983 8909 80 443
