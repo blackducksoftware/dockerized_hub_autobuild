@@ -19,7 +19,7 @@ LABEL Productversion=${Productversion} \
              fi; \
              docker run   -h $(hostname) --volumes-from hub_data --name=hub --rm -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 blackducksoftware/hub:${Productversion}" \
       STOP="docker stop hub" \
-      CLEAN="docker stop hub && docker rm hub;"
+      CLEAN="docker stop hub && docker rm hub_data;"
 
 # the ports to expose for this image
 EXPOSE 4181 8080 7081 55436 8009 8983 8909 80 443
