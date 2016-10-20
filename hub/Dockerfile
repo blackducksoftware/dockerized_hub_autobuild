@@ -36,7 +36,6 @@ RUN yum update -y && yum install -y \
   redhat-lsb-core \
   which \
   unzip \
-  sudo \
   # set root password
   &&  echo blackduck | passwd --stdin root \
   # create user and groups necessary for installation
@@ -51,8 +50,6 @@ RUN yum update -y && yum install -y \
   && mkdir -p /opt/blackduck/maiastra && chown -R blckdck:blckdck /opt/blackduck \
   && usermod -m -d /home/blackduck blckdck
 #  && yum remove -y passwd 
-
-RUN echo "kernel.shmmax = 323485952" > /etc/sysctl.conf
 
 RUN mkdir -p /opt/blackduck/install
 COPY . /opt/blackduck/install
