@@ -51,6 +51,10 @@ RUN yum update -y && yum install -y \
   && usermod -m -d /home/blackduck blckdck
 #  && yum remove -y passwd 
 
+RUN cat /etc/sysctl.conf
+
+RUN foobar
+
 RUN mkdir -p /opt/blackduck/install
 COPY . /opt/blackduck/install
 RUN ls -laR /opt/blackduck/install
