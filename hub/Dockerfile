@@ -35,6 +35,7 @@ RUN yum update -y && yum install -y \
   passwd \
   redhat-lsb-core \
   which \
+  unzip \
   # set root password
   &&  echo blackduck | passwd --stdin root \
   # create user and groups necessary for installation
