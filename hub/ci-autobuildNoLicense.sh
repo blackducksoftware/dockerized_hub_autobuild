@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # autobuildNoLicense.sh
-/*
-   author : Ton Schoots
-
-   This bash script automatically builds a dockerized hub
-
-   issues :
-         17-09-2016      $TAG and $Productversion should be the same should this be and assert?
-*/
+#/*
+#   author : Ton Schoots
+#
+#   This bash script automatically builds a dockerized hub
+#
+#   issues :
+#         17-09-2016      $TAG and $Productversion should be the same should this be and assert?
+#*/
 
 
 _IMAGE=
@@ -73,7 +73,8 @@ rm -rf  ./tmp
 
 
 #build the initial image
-docker build  --build-arg "Productversion=${Productversion}" \
+docker build  --build-arg=constraint:node==eng-ddc-node01 \
+              --build-arg "Productversion=${Productversion}" \
               --build-arg "Build=${Build}" \
               --build-arg "Buildtime=${Buildtime}" \
               --build-arg "BDSHubUIVersion=${BDSHubUIVersion}" -t  "${_TMP_IMG_NAME}" .  
@@ -90,7 +91,7 @@ find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LI
 
 
 #start initial image with the install script
-docker run -i -h $(hostname) --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hubinstall/installNoLicense.sh
+docker run -i --label node:eng-ddc-node01 --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hubinstall/installNoLicense.sh
 
 # commit the installation container to image
 docker commit --change='CMD [ "/opt/blackduck/maiastra/start.sh" ]' $_CONTAINER_NAME $_IMAGE_NAME
