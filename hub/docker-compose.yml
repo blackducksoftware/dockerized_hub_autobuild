@@ -1,0 +1,18 @@
+version: '2'
+services:
+  hub: 
+    image: 'hub_blloyd:latest'
+    command: bash -c "find . -name 'appmgr.hubinstall*.zip' -exec unzip -o  {}  -d . \; find . -name 'bds-override.properties' -exec sed -i '$$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \; find . -name 'silentInstall.properties' -exec sed -i '$$ a\PROP_ACTIVE_REGID=schoots_hub_ton'  {} \; /tmp/hubinstall/installNoLicense.sh;"
+    volumes:
+      - $(pwd):/tmp/hubinstall
+    network_mode: host
+    ports:
+      - 4181:4181
+      - 8080:8080
+      - 7081:7081
+      - 55436:55436
+      - 8009:8009
+      - 8993:8993
+      - 8909:8909
+    labels:
+      - "constraint:node==eng-ddc-node01"
