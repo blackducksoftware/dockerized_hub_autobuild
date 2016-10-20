@@ -52,9 +52,6 @@ RUN yum update -y && yum install -y \
 #  && yum remove -y passwd 
 
 RUN echo "kernel.shmmax = 323485952" > /etc/sysctl.conf
-RUN sysctl -p 
-
-RUN foobar
 
 RUN mkdir -p /opt/blackduck/install
 COPY . /opt/blackduck/install
