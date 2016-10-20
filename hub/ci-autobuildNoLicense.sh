@@ -64,7 +64,7 @@ find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d ./tmp \;
 find . -type f -name "hub.web-*.zip" -exec unzip -o {} -d ./tmp \;
 find . -type f -name "main.web-*.war" -exec unzip -o {} -d ./tmp \;
 find . -type f -name "MANIFEST.MF" -exec dos2unix {} \;
-Productversion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Product-version | sed 's/Product-version: //'  )
+Productversion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Product-version | sed 's/Product-version: //' | sed 's/\n//'  )
 Build=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Build: | sed 's/Build: //'  )
 Buildtime=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Build-time: | sed 's/Build-time: //' )
 #LastCommit=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Last-Commit: | sed 's/Last-Commit: //' )
