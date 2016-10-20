@@ -51,7 +51,8 @@ RUN yum update -y && yum install -y \
   && usermod -m -d /home/blackduck blckdck
 #  && yum remove -y passwd 
 
-RUN cat /etc/sysctl.conf
+RUN echo "kernel.shmmax = 323485952" > /etc/sysctl.conf
+RUN sysctl -p 
 
 RUN foobar
 
