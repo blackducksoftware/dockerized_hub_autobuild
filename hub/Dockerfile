@@ -5,6 +5,7 @@ ARG Productversion=unknown
 ARG Build=unknown
 ARG Buildtime=unknown
 ARG BDSHubUIVersion=unknown
+ARG License
 
 LABEL Productversion=${Productversion} \
       Build=${Build}  \
@@ -57,8 +58,10 @@ RUN ls -laR /opt/blackduck/install
 RUN echo "This is my product version: ${Productversion}, isn't it cool?"
 RUN unzip /opt/blackduck/install/appmgr.hubinstall.full-${Productversion}.zip -d /opt/blackduck/install
 RUN find /opt/blackduck/install -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
-RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LICENSE"  {} \;
+RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${License}"  {} \;
 RUN chown -R blckdck:blckdck /opt/blackduck/install
+
+RUN cat /opt/blackduck/install
 
 COPY ./start.sh /opt/blackduck/maiastra/
 RUN  chown -R blckdck:blckdck opt/blackduck/maiastra \

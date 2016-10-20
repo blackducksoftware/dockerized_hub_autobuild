@@ -75,6 +75,7 @@ echo "This is my product version here ${Productversion}, isn't it lovely?"
 
 #build the initial image
 docker build  --build-arg=constraint:node==eng-ddc-node01 \
+              --build-arg "License=${_LICENSE}" \
               --build-arg "Productversion=${Productversion}" \
               --build-arg "Build=${Build}" \
               --build-arg "Buildtime=${Buildtime}" \
