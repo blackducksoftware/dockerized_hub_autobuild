@@ -79,6 +79,7 @@ docker build  --build-arg=constraint:node==eng-ddc-node01 \
               --build-arg "Buildtime=${Buildtime}" \
               --build-arg "BDSHubUIVersion=${BDSHubUIVersion}" -t  "${_TMP_IMG_NAME}" .  
 
+if [ "$?" != "0" ]; then exit $?; fi
 
 # unzip installer
 find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
