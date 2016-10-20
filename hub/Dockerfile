@@ -53,6 +53,7 @@ RUN yum update -y && yum install -y \
 
 RUN mkdir -p /opt/blackduck/install
 COPY . /opt/blackduck/install
+RUN ls -laR /opt/blackduck/install
 RUN unzip /opt/blackduck/install/appmgr.hubinstall.full-${Productversion}.zip -d /opt/blackduck/install
 RUN find /opt/blackduck/install -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LICENSE"  {} \;
