@@ -83,13 +83,13 @@ docker build  --build-arg=constraint:node==eng-ddc-node01 \
 if [ "$?" != "0" ]; then exit $?; fi
 
 # unzip installer
-find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
+#find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 
 # override install properties to put data in one place
-find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
+#find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 
 # set license in properties file
-find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LICENSE"  {} \;
+#find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LICENSE"  {} \;
 
 
 #start initial image with the install script
