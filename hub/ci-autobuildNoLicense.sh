@@ -93,7 +93,7 @@ find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LI
 
 
 #start initial image with the install script
-docker run -i --label node:eng-ddc-node01 --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
+docker run --shm-size="500m" -i --label node:eng-ddc-node01 --name=$_CONTAINER_NAME -v $(pwd):/tmp/hubinstall -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
 
 if [ "$?" != "0" ]; then exit $?; fi
 
