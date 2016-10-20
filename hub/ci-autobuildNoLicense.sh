@@ -71,6 +71,7 @@ Buildtime=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep Build-time
 BDSHubUIVersion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep BDS-Hub-UI-Version: | sed 's/BDS-Hub-UI-Version: //' )
 rm -rf  ./tmp
 
+echo "This is my product version here ${Productversion}, isn't it lovely?"
 
 #build the initial image
 docker build  --build-arg=constraint:node==eng-ddc-node01 \
