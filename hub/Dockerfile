@@ -61,7 +61,7 @@ RUN find /opt/blackduck/install -name "bds-override.properties" -exec sed -i '$ 
 RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${License}"  {} \;
 RUN chown -R blckdck:blckdck /opt/blackduck/install
 
-RUN cat /opt/blackduck/install
+find /opt/blackduck/install -name "silentInstall.properties" -exec cat {} \;
 
 COPY ./start.sh /opt/blackduck/maiastra/
 RUN  chown -R blckdck:blckdck opt/blackduck/maiastra \
