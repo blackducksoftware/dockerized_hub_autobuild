@@ -4,6 +4,8 @@
 
 echo "HUB install starting"
 
+sudo bash -c "echo 'kernel.shmmax = 323485952' > /etc/sysctl.conf"
+sudo sysctl -p
 
 # start installation
 find /opt/blackduck/install -name "appmgr.hubinstall" -execdir  {} -sf /opt/blackduck/install/silentInstall.properties \; 
