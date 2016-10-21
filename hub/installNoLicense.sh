@@ -5,8 +5,7 @@
 echo "HUB install starting"
 
 # start installation
-#echo "1" | find /opt/blackduck/install -name "appmgr.hubinstall" -execdir {} -sf /opt/blackduck/install/silentInstall.properties \; 
-echo '1' | /opt/blackduck/install/appmgr.hubinstall.full/appmgr.hubinstall-3.4.0/bin/appmgr.hubinstall -sf /opt/blackduck/install/silentInstall.properties
+find /opt/blackduck/install -name "appmgr.hubinstall" -execdir {} -sf /opt/blackduck/install/silentInstall.properties \; 
 
 # stop hub
 /opt/blackduck/hub/appmgr/bin/hubcontrol.sh stop
