@@ -59,6 +59,7 @@ RUN echo "This is my product version: ${Productversion}, isn't it cool?"
 RUN unzip /opt/blackduck/install/appmgr.hubinstall.full-${Productversion}.zip -d /opt/blackduck/install
 RUN find /opt/blackduck/install -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${License}"  {} \;
+RUN find /opt/blackduck/install -name "silentInstall.properties" -exec sed -i "$ a\PROP_IPTABLES_REDIRECT_IP_ADDRESS=172.17.0.1"  {} \;
 RUN chown -R blckdck:blckdck /opt/blackduck/install
 
 RUN find /opt/blackduck/install -name "silentInstall.properties" -exec cat {} \;
