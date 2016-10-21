@@ -94,7 +94,7 @@ if [ "$?" != "0" ]; then exit $?; fi
 
 
 #start initial image with the install script
-docker run -i --sysctl kernel.shmmax=323485952 --net=host --label node:eng-ddc-node01 --name=$_CONTAINER_NAME -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
+docker run -i --sysctl kernel.shmmax=323485952 --label node:eng-ddc-node01 --name=$_CONTAINER_NAME -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
 
 if [ "$?" != "0" ]; then exit $?; fi
 
