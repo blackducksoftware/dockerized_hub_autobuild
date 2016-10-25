@@ -23,3 +23,6 @@ rm -rf /opt/blackduck/hub/bd-install_log.txt
 
 # remove license file
 rm -rf /opt/blackduck/hub/config/suite_v1.xml
+
+# remove installation directory
+rm -rf /opt/blackduck/install
