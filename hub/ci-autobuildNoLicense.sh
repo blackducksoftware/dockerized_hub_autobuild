@@ -19,6 +19,7 @@ usage () {
         -i | --images : the name of the image to create
         -l | --license : the license you got from Black Duck support
         -n | --node : the Docker node on which to build the Hub image 
+        -v | --volume : the Docker volume to which to copy the installation files 
        ' 
 }
 
@@ -33,6 +34,9 @@ while [ "$1" != "" ]; do
       -n | --node )        shift
                            _DOCKER_NODE=$1
                            ;;
+      -v | --volume )      shift
+                           _VOLUME=$1
+                           ;;
       -h | --help )        usage
                            exit
                            ;;
@@ -44,7 +48,7 @@ done
 
 # check mandatory parameters
 #if [ $_IMAGE -eq "" | $_LICENSE -eq "" | $_DOCKER_NODE -eq "" ]; do
-if [ "$_IMAGE" == "" ]  || [ "$_LICENSE" == "" ] || [ "$_DOCKER_NODE" == "" ]; then
+if [ "$_IMAGE" == "" ]  || [ "$_LICENSE" == "" ] || [ "$_DOCKER_NODE" == "" ] || [ "$_VOLUME" == "" ]; then
   usage
   exit
 fi
@@ -76,7 +80,9 @@ BDSHubUIVersion=$(find . -type f -name "MANIFEST.MF" -exec cat {} \; | grep BDS-
 rm -rf  ./tmp
 
 #build the initial image
-docker build  --file Dockerfile-ci \
+docker build  --no-cache \
+              --force-rm \
+              --file Dockerfile-ci \
               --build-arg=constraint:node==${_DOCKER_NODE} \
               --build-arg "License=${_LICENSE}" \
               --build-arg "Productversion=${Productversion}" \
@@ -86,18 +92,8 @@ docker build  --file Dockerfile-ci \
 
 if [ "$?" != "0" ]; then exit $?; fi
 
-# unzip installer
-#find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
-
-# override install properties to put data in one place
-#find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
-
-# set license in properties file
-#find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=$_LICENSE"  {} \;
-
-
 #start initial image with the install script
-docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
+docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /var/lib/docker/volumes/${_VOLUME}/_data:/opt/blackduck/install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /opt/blackduck/install/installNoLicense.sh
 
 if [ "$?" != "0" ]; then exit $?; fi
 
