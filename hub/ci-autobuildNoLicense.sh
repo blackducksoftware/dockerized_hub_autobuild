@@ -15,12 +15,14 @@ _IMAGE=
 _LICENSE=
 _DOCKER_NODE=
 _ON_PREM=false
+_BUILD_USER=serv-builder
 
 usage () {
   echo 'This should be started with the following mandatory fields
         -i | --images : the name of the image to create
         -l | --license : the license you got from Black Duck support
         -n | --node : the Docker node on which to build the Hub image 
+        -u | --user : the user that has write access on the node 
         -o | --on-prem : build with on-prem settings for the Hub
        ' 
 }
@@ -36,6 +38,9 @@ while [ "$1" != "" ]; do
       -n | --node )        shift
                            _DOCKER_NODE=$1
                            ;;
+      -u | --user )        shift
+                           _BUILD_USER=$1
+                           ;;
       -o | --on-prem )     shift
                            _ON_PREM=$1
                            ;;
@@ -50,7 +55,7 @@ done
 
 # check mandatory parameters
 #if [ $_IMAGE -eq "" | $_LICENSE -eq "" | $_DOCKER_NODE -eq "" | $_ON_PREM -eq "" ]; do
-if [ "$_IMAGE" == "" ]  || [ "$_LICENSE" == "" ] || [ "$_DOCKER_NODE" == "" ]; then
+if [ "$_IMAGE" == "" ]  || [ "$_LICENSE" == "" ] || [ "$_DOCKER_NODE" == "" ] || [ "$_BUILD_USER" == "" ]; then
   usage
   exit
 fi
@@ -96,7 +101,7 @@ if [ "$?" != "0" ]; then exit $?; fi
 
 # Configure the volume staging area for the installation
 ssh ${_BUILD_USER}@${_NODE}.dc1.lan "rm -rf ~/hub-install"
-ssh $(_BUILD_USER}@${NODE}.dc1.lan "mkdir ~/hub-install"
+ssh $(_BUILD_USER}@${_NODE}.dc1.lan "mkdir ~/hub-install"
 find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${_LICENSE}"  {} \;
