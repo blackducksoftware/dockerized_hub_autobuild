@@ -36,6 +36,7 @@ echo "Start the Hub"
 /opt/blackduck/hub/appmgr/bin/hubcontrol.sh start
 
 if [ "$_ON_PREM" == "true" ]; then
+  echo "Doing an on-prem install, configuring the zkCli.sh settings..."
   sleep 10
 
   /opt/blackduck/hub/appmgr/zookeeper/bin/zkCli.sh -server localhost:4181 <<EOF
