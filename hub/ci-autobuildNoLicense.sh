@@ -115,6 +115,7 @@ if [ "$_DEVELOPER_REPO" != "" ]; then
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_PROTOCOL=\PROP_WEB_PROXY_PROTOCOL=http" {} \;
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_HOST=\PROP_WEB_PROXY_HOST=tank.blackducksoftware.com" {} \;
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_PORT=\PROP_WEB_PROXY_PORT=3128" {} \;
+fi
 scp -r . serv-builder@eng-ddc-node01.dc1.lan:~/hub-install/.
 
 #start initial image with the install script
