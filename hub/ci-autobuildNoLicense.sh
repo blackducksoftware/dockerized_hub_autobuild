@@ -100,8 +100,8 @@ docker build  --no-cache \
 if [ "$?" != "0" ]; then exit $?; fi
 
 # Configure the volume staging area for the installation
-echo "ssh ${_BUILD_USER}@${_NODE}.dc1.lan \"rm -rf ~/hub-install\""
-ssh ${_BUILD_USER}@${_NODE}.dc1.lan "mkdir ~/hub-install"
+ssh ${_BUILD_USER}@${_DOCKER_NODE}.dc1.lan "rm -rf ~/hub-install"
+ssh ${_BUILD_USER}@${_DOCKER_NODE}.dc1.lan "mkdir ~/hub-install"
 find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${_LICENSE}"  {} \;
