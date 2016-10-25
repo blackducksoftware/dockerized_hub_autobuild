@@ -4,6 +4,10 @@
 
 echo "HUB install starting"
 
+mkdir -p /opt/blackduck/install
+
+cp -r /tmp/hub-install /opt/blackduck/install
+
 # start installation
 find /opt/blackduck/install -name "appmgr.hubinstall" -execdir {} -sf /opt/blackduck/install/silentInstall.properties \; 
 
