@@ -111,6 +111,7 @@ find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${_LICENSE}"  {} \;
 if [ "$_DEVELOPER_REPO" != "" ]; then
+  echo "Is a developer build, update the silentInstall.properties"
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_USE_WEB_PROXY=n\PROP_USE_WEB_PROXY=y" {} \;
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_PROTOCOL=\PROP_WEB_PROXY_PROTOCOL=http" {} \;
   find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_HOST=\PROP_WEB_PROXY_HOST=tank.blackducksoftware.com" {} \;
