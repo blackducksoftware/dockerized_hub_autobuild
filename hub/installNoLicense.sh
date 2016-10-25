@@ -8,7 +8,7 @@ echo "Making the /opt/blackduck/install folder"
 mkdir -p /opt/blackduck/install
 
 echo "Copying the installation files into the /opt/blackduck/install folder"
-cp --verbose -r /tmp/hub-install /opt/blackduck/install
+cp --verbose -r /tmp/hub-install/* /opt/blackduck/install
 
 echo "Starting the installation procedures"
 # start installation
