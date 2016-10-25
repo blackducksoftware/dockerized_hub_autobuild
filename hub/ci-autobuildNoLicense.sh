@@ -119,7 +119,7 @@ scp -r . serv-builder@eng-ddc-node01.dc1.lan:~/hub-install/.
 
 #start initial image with the install script
 if [ "$_ON_PREM" != "true" ]; then
-  if [ "$_DEVELOPMENT_REPO != "" ]; then
+  if [ "$_DEVELOPMENT_REPO" != "" ]; then
     echo "Developer build"
     docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /home/serv-builder/hub-install:/tmp/hub-install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME "/tmp/hub-install/installNoLicense.sh --developer-repo ${_DEVELOPER_REPO}"
   else
