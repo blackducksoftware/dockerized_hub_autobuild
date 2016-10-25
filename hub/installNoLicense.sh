@@ -2,6 +2,9 @@
 
 while [ "$1" != "" ]; do
   case $1 in
+      -d | --developer-repo )   shift
+                           _DEVELOPER_REPO=$1
+                           ;;
       -o | --on-prem )     shift
                            _ON_PREM=$1
                            ;;
@@ -22,6 +25,11 @@ mkdir -p /opt/blackduck/install
 
 echo "Copying the installation files into the /opt/blackduck/install folder"
 cp --verbose -r /tmp/hub-install/* /opt/blackduck/install
+
+if [ "$_DEVELOPER" != "" ]; then
+  echo "Setting the APPMGR_HUBINSTALL_OPTS for developer builds"
+  export APPMGR_HUBINSTALL_OPTS=-DartifactoryURL=http://artifactory.blackducksoftware.com -DartifactoryPrefix=artifactory -DartifactoryRepo=bds-release
+fi
 
 echo "Starting the installation procedures"
 # start installation

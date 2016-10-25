@@ -16,6 +16,7 @@ _LICENSE=
 _DOCKER_NODE=
 _ON_PREM=false
 _BUILD_USER=serv-builder
+_DEVELOPER_REPO=bds-release
 
 usage () {
   echo 'This should be started with the following mandatory fields
@@ -24,6 +25,7 @@ usage () {
         -n | --node : the Docker node on which to build the Hub image 
         -u | --user : the user that has write access on the node 
         -o | --on-prem : build with on-prem settings for the Hub
+        -d | --developer-repo : build the Hub installation from a developer repository 
        ' 
 }
 
@@ -43,6 +45,9 @@ while [ "$1" != "" ]; do
                            ;;
       -o | --on-prem )     shift
                            _ON_PREM=$1
+                           ;;
+      -d | --developer-repo )     shift
+                           _DEVELOPER_REPO=$1
                            ;;
       -h | --help )        usage
                            exit
@@ -105,12 +110,22 @@ ssh ${_BUILD_USER}@${_DOCKER_NODE}.dc1.lan "mkdir ~/hub-install"
 find . -name "appmgr.hubinstall*.zip" -exec unzip -o  {}  -d . \;
 find . -name "bds-override.properties" -exec sed -i '$ a\PROP_ZK_DATA_DIR=/var/lib/blckdck/hub/zookeeper/data'  {} \;
 find . -name "silentInstall.properties" -exec sed -i "$ a\PROP_ACTIVE_REGID=${_LICENSE}"  {} \;
+if [ "$_DEVELOPER_REPO" != "" ]; then
+  find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_USE_WEB_PROXY=n\PROP_USE_WEB_PROXY=y\" {} \;
+  find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_PROTOCOL=\PROP_WEB_PROXY_PROTOCOL=http\" {} \;
+  find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_HOST=\PROP_WEB_PROXY_HOST=tank.blackducksoftware.com\" {} \;
+  find . -name "silentInstall.properties" -exec sed -i "$ s\PROP_WEB_PROXY_PORT=\PROP_WEB_PROXY_PORT=3128\" {} \;
 scp -r . serv-builder@eng-ddc-node01.dc1.lan:~/hub-install/.
 
 #start initial image with the install script
 if [ "$_ON_PREM" != "true" ]; then
-  echo "Not an on-prem build"
-  docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /home/serv-builder/hub-install:/tmp/hub-install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hub-install/installNoLicense.sh
+  if [ "$_DEVELOPMENT_REPO != "" ]; then
+    echo "Developer build"
+    docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /home/serv-builder/hub-install:/tmp/hub-install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME "/tmp/hub-install/installNoLicense.sh --developer-repo ${_DEVELOPER_REPO}"
+  else
+    echo "Not an on-prem build"
+    docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /home/serv-builder/hub-install:/tmp/hub-install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME /tmp/hub-install/installNoLicense.sh
+  fi
 else
   echo "On-prem build..."
   docker run -i --sysctl kernel.shmmax=323485952 --label node:${_DOCKER_NODE} --name=$_CONTAINER_NAME -v /home/serv-builder/hub-install:/tmp/hub-install -p 4181:4181 -p 8080:8080 -p 7081:7081 -p 55436:55436 -p 8009:8009 -p 8993:8993 -p 8909:8909 $_TMP_IMG_NAME "/tmp/hub-install/installNoLicense.sh --on-prem true"
