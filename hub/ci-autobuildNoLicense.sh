@@ -16,7 +16,7 @@ _LICENSE=
 _DOCKER_NODE=
 _ON_PREM=false
 _BUILD_USER=serv-builder
-_DEVELOPER_REPO=bds-release
+_DEVELOPER_REPO=
 
 usage () {
   echo 'This should be started with the following mandatory fields
