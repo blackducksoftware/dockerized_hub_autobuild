@@ -26,9 +26,9 @@ mkdir -p /opt/blackduck/install
 echo "Copying the installation files into the /opt/blackduck/install folder"
 cp --verbose -r /tmp/hub-install/* /opt/blackduck/install
 
-if [ "$_DEVELOPER" != "" ]; then
+if [ "$_DEVELOPER_REPO" != "" ]; then
   echo "Setting the APPMGR_HUBINSTALL_OPTS for developer builds"
-  export APPMGR_HUBINSTALL_OPTS=-DartifactoryURL=http://artifactory.blackducksoftware.com -DartifactoryPrefix=artifactory -DartifactoryRepo=bds-release
+  export APPMGR_HUBINSTALL_OPTS=-DartifactoryURL=http://artifactory.blackducksoftware.com -DartifactoryPrefix=artifactory -DartifactoryRepo=${_DEVELOPER_REPO}
 fi
 
 echo "Starting the installation procedures"
