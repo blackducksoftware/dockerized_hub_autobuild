@@ -141,6 +141,7 @@ fi
 if [ "$?" != "0" ]; then exit $?; fi
 
 # commit the installation container to image
+echo "docker commit --change='CMD [ \"/opt/blackduck/maiastra/start.sh\" ]' $_CONTAINER_NAME $_IMAGE_NAME"
 docker commit --change='CMD [ "/opt/blackduck/maiastra/start.sh" ]' $_CONTAINER_NAME $_IMAGE_NAME
 
 
