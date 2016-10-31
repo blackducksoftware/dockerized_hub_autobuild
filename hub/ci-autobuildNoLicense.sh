@@ -146,13 +146,13 @@ docker commit --change='CMD [ "/opt/blackduck/maiastra/start.sh" ]' $_CONTAINER_
 
 
 # remove the install container
-docker rm $_CONTAINER_NAME
+#docker rm $_CONTAINER_NAME
 
 # remove temp image
-docker rmi $_TMP_IMG_NAME
+#docker rmi $_TMP_IMG_NAME
 
 # remove last line in the silent.properties file so lincense is removed
- find . -name "silentInstall.properties" -exec sed -i '$ d'  {} \;
+# find . -name "silentInstall.properties" -exec sed -i '$ d'  {} \;
 
 # remove the install dir
-rm -rf  $(ls -all | grep "^d" | grep "appmgr\.hubinstall" | awk '{print $9}')
+#rm -rf  $(ls -all | grep "^d" | grep "appmgr\.hubinstall" | awk '{print $9}')
