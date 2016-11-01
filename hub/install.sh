@@ -69,6 +69,7 @@ if [ "$_ON_PREM" == "true" ]; then
   create /hub/config/blackduck.kbreleasedetail.host rest_detail
   create /hub/config/blackduck.kbreleasedetail.port 8080
   create /hub/config/blackduck.kbreleasedetail.scheme http
+  create /hub/config/blackduck.docs.server http://hub_documentation/
   
   create /hub/prop/PROP_HUB_JOBRUNNER_MX_MB 8192
 
