@@ -67,7 +67,7 @@ fi
 
 
 # initialize constants
-_TAG=$(find . -name "appmgr.hubinstall*.zip" | sed 's/.*full-//' | sed 's/\.zip//')
+_TAG=$(find . -name "appmgr.hubinstall*.zip" | sed 's/.*full-//' | sed 's/\.zip//' | tr -d '\r' | tr -d '\n' )
 if [ "$_TAG" == "" ]; then
   echo "installer not present in this directory or not of format appmgr.hubinstall*.zip"
   exit 2
