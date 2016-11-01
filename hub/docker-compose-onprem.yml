@@ -1,0 +1,96 @@
+version: '2'
+
+
+services:
+    kb_auth:
+        image: kb_auth:on_prem_1.0.0
+        container_name: kb_auth
+        ports:
+        - "1235:8080"
+        networks:
+        - onprem
+    db_detail:
+        image: kvs:on_prem_1.0.0 
+        container_name: db_detail
+        ports:
+        - "5432:5432"
+        networks:
+        - onprem
+    db_match:
+        image: kb_match_db:on_prem_1.0.0
+        container_name: db_match
+        ports:
+        - "5433:5432"
+        networks:
+        - onprem
+    solr_search:
+        image: kb_solr:on_prem_1.0.0
+        container_name: kb_solr
+        ports:
+        - "8983:8983"
+        networks:
+        - onprem
+    rest_detail:
+        image: kb_detail:on_prem_1.0.0
+        container_name: rest_detail
+        ports:
+        - "1234:8080"
+        networks:
+        - onprem
+    rest_match:
+        image: kb_match:on_prem_1.0.0
+        container_name: rest_match
+        depends_on:
+        - db_match
+        ports:
+        - "1236:8080"
+        networks:
+        - onprem
+    rest_vuln:
+        image: kb_vuln:on_prem_1.0.0
+        container_name: rest_vuln
+        ports:
+        - "1237:8080"
+        networks:
+        - onprem
+    rest_search:
+        image: kb_search:on_prem_1.0.0 
+        container_name: kb_search
+        depends_on:
+        - kb_auth
+        ports:
+        - "1238:8080"
+        networks:
+        - onprem
+    hubdoc:
+        image: hubdoc:on_prem_1.0.0
+        container_name: "hubdoc"
+        ports:
+         - "9999:8080"
+        networks:
+         - onprem
+    hub:
+        image: hub-onprem:on_prem_1.0.0
+        container_name: "hub-on-prem-01.bds-ad.lc"
+        ports:
+         - "4181"
+         - "8080:8080"
+         - "7081:7081"
+         - "55436"
+         - "8009"
+         - "8993"
+         - "8909"
+        networks:
+         - onprem
+        volumes:
+         - hub_db_data:/var/lib/blckdck/hub:rw
+         - hub_lic_data:/opt/blackduck/hub/config:rw
+        hostname:  "hub-on-prem-01.bds-ad.lc" 
+volumes:
+  hub_db_data:
+    driver: local
+  hub_lic_data:
+    driver: local
+networks:
+    onprem:
+
