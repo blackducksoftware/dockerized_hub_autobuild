@@ -70,7 +70,7 @@ services:
         networks:
          - onprem
     hub:
-        image: hub-onprem:on_prem_1.0.0
+        image: hub_onprem:on_prem_1.0.0
         container_name: "hub-on-prem-01.bds-ad.lc"
         ports:
          - "4181"

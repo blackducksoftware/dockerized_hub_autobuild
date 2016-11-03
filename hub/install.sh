@@ -79,6 +79,21 @@ EOF
   /opt/blackduck/hub/appmgr/bin/agentcmd.sh Hub bounce
   /opt/blackduck/hub/appmgr/bin/agentcmd.sh JobRunnerAgent-1 bounce
 else
+  if [ "$_DEVELOPER_REPO" != "" ]; then
+    echo "Doing a developer install, configuring the zkCli.sh settings..."
+    sleep 10
+
+    /opt/blackduck/hub/appmgr/zookeeper/bin/zkCli.sh -server localhost:4181 <<EOF
+  create /hub/config/blackduck.docs.server http://doc-stage.blackducksoftware.com/
+
+quit
+EOF
+
+    /opt/blackduck/hub/appmgr/bin/agentcmd.sh Hub bounce
+  fi
+fi
+
+if [ "$_ON_PREM" != "true" ]; then
   echo "Cleanup the licensing"
   # remove all license related stuff
   rm -rf /opt/blackduck/hub/logs/appmgr/bd-AppmgrAgent.log*

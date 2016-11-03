@@ -69,6 +69,7 @@ if [ "$_ON_PREM" == "true" ]; then
   create /hub/config/blackduck.kbreleasedetail.host rest_detail
   create /hub/config/blackduck.kbreleasedetail.port 8080
   create /hub/config/blackduck.kbreleasedetail.scheme http
+  create /hub/config/blackduck.docs.server http://hub_documentation/ 
   
   create /hub/prop/PROP_HUB_JOBRUNNER_MX_MB 8192
 
@@ -79,13 +80,28 @@ EOF
   /opt/blackduck/hub/appmgr/bin/agentcmd.sh JobRunnerAgent-1 bounce
 fi
 
-echo "Cleanup the licensing"
-# remove all license related stuff
-rm -rf /opt/blackduck/hub/logs/appmgr/bd-AppmgrAgent.log*
-rm -rf /opt/blackduck/hub/bd-install_log.txt
+if [ "$_DEVELOPER" != "" ]; then
+  echo "Doing a developer install, configuring the zkCli.sh settings..."
+  sleep 10
 
-# remove license file
-rm -rf /opt/blackduck/hub/config/suite_v1.xml
+/opt/blackduck/hub/appmgr/zookeeper/bin/zkCli.sh -server localhost:4181 <<EOF
+  create /hub/config/blackduck.docs.server http://doc-stage.blackducksoftware.com/ 
+
+quit
+EOF
+
+  /opt/blackduck/hub/appmgr/bin/agentcmd.sh Hub bounce
+fi
+
+if [ "$_ON_PREM" != "true" ]; then]
+  echo "Cleanup the licensing"
+  # remove all license related stuff
+  rm -rf /opt/blackduck/hub/logs/appmgr/bd-AppmgrAgent.log*
+  rm -rf /opt/blackduck/hub/bd-install_log.txt
+
+  # remove license file
+  rm -rf /opt/blackduck/hub/config/suite_v1.xml
+fi
 
 echo "Remove the installation folder when we're done"
 # remove installation directory
